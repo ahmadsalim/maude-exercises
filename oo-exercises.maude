@@ -1,0 +1,35 @@
+(omod PAIRING is
+    protecting QID .
+    protecting INT .
+    
+    sorts BasicId Pairing .
+    
+    subsort Qid < BasicId < Oid .
+    subsort BasicId < Pairing .
+    
+    op unpaired : -> Pairing [ctor] .
+    
+    
+    *** Exercise 2
+    class Basic | pairing : Pairing .
+    
+    vars X Y : BasicId .
+    
+    rl [pair] : < X : Basic | pairing : unpaired >
+                 < Y : Basic | pairing : unpaired >
+              => < X : Basic | pairing : Y >
+                 < Y : Basic | pairing : X > .
+              
+    
+endom)
+
+
+(search in PAIRING : < 'A : Basic | pairing : unpaired > 
+                     < 'B : Basic | pairing : unpaired >
+                     < 'C : Basic | pairing : unpaired >
+                     < 'D : Basic | pairing : unpaired > =>! 
+                     < 'A : Basic | pairing : X1:BasicId > 
+                     < 'B : Basic | pairing : X2:BasicId >
+                     < 'C : Basic | pairing : X3:BasicId >
+                     < 'D : Basic | pairing : X4:BasicId >
+                      .)
