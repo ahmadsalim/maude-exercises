@@ -1,0 +1,70 @@
+fmod UN-NAT is
+  sort Nat .
+  
+  op 0 : -> Nat [ctor] .
+  op s : Nat -> Nat [ctor] .
+  
+  op _+_ : Nat Nat -> Nat .
+  
+  vars N M : Nat .
+  
+  eq 0 + N = N .
+  eq s(M) + N = s(M + N) .
+  
+  *** Exercise 1
+  
+  op _*_ : Nat Nat -> Nat [comm assoc] .
+  
+  eq 0 * N = 0 .
+  eq s(M) * N = N + (M * N) .
+  
+endfm
+
+fmod INT-PAIR-LIST is
+    protecting INT .
+    sort IntPair .
+    op ((_,_)) : Int Int -> IntPair [ctor] .
+    
+    sort IntPairList .
+    subsort IntPair < IntPairList .
+    op nil : -> IntPairList [ctor] .
+    op __ : IntPairList IntPairList -> IntPairList
+        [ctor assoc id: nil] .
+endfm
+
+fmod INT-ARRAY is
+    protecting INT-PAIR-LIST .
+    sorts NeIntArray IntArray .
+    subsorts IntPair < NeIntArray < IntArray < IntPairList .
+    
+    op _[_]    : NeIntArray Int -> [Int] .
+    op _[_->_] : NeIntArray Int Int -> [IntArray] .
+    ops low high : NeIntArray -> Int .
+    
+    vars I J X Y : Int .
+    vars L L' : IntPairList .
+    
+    mb nil : IntArray .
+    cmb (I, X) (J, Y) L : NeIntArray
+        if I + 1 = J /\ (J , Y) L : NeIntArray .
+       
+    ceq (L (I, X) L')[I] = X
+        if L (I, X) L' : NeIntArray .    
+    ceq (L (I, X) L')[I -> Y] = (L (I, Y) L')
+        if L (I, X) L' : NeIntArray .
+        
+    ceq low((I, X) L) = I if (I, X) L : NeIntArray .
+    ceq high(L (I, X)) = I if L (I, X) : NeIntArray .
+    
+    sort OptionalInt .
+    op some : Int -> OptionalInt [ctor] . 
+    op none : -> OptionalInt [ctor] .
+    
+    op find_in_ : Int IntArray -> OptionalInt .
+    
+    *** Exercise 1.2
+    ceq find X in L (I, X) L' = some(I)
+        if L (I, X) L' : NeIntArray .
+        
+    eq find X in L = none [owise] .
+endfm

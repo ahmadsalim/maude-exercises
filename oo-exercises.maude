@@ -1,0 +1,38 @@
+(omod PAIRING is
+    protecting QID .
+    protecting INT .
+    
+    sorts BasicId Pairing .
+    
+    subsort Qid < BasicId < Oid .
+    subsort BasicId < Pairing .
+    
+    op unpaired : -> Pairing [ctor] .
+    
+    
+    *** Exercise 2
+    class Basic | pairing : Pairing , fav : Int .
+    
+    vars X Y : BasicId .
+    vars FX FY : Int .
+    
+    crl [pair] :  < X : Basic | pairing : unpaired , fav : FX  >
+                 < Y : Basic | pairing : unpaired , fav : FY >
+              => < X : Basic | pairing : Y >
+                 < Y : Basic | pairing : X > 
+                 
+    if abs (FX - FY) <= 5  .
+              
+    
+endom)
+
+
+(search in PAIRING : < 'A : Basic | pairing : unpaired, fav : 5 > 
+                     < 'B : Basic | pairing : unpaired, fav : 7 >
+                     < 'C : Basic | pairing : unpaired, fav : 9 >
+                     < 'D : Basic | pairing : unpaired, fav : 11 > =>! 
+                     < 'A : Basic | pairing : X1:BasicId > 
+                     < 'B : Basic | pairing : X2:BasicId >
+                     < 'C : Basic | pairing : X3:BasicId >
+                     < 'D : Basic | pairing : X4:BasicId >
+                      .)
